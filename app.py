@@ -1,9 +1,12 @@
+import os
+# WAJIB: Letakkan ini di baris paling atas sebelum import tensorflow
+os.environ["TF_USE_LEGACY_KERAS"] = "1" 
+
 import streamlit as st
 import tensorflow as tf
 import numpy as np
 from PIL import Image
 import pandas as pd
-import os
 
 # =========================
 # CONFIG PAGE
@@ -13,17 +16,23 @@ st.title("Deteksi Penyakit Paru-Paru (X-ray)")
 st.write("Upload gambar X-ray untuk mendapatkan prediksi.")
 
 # =========================
-# LOAD MODEL (LEBIH AMAN DEPLOY)
+# LOAD MODEL (PASTIKAN NAMA FILE SESUAI DI GITHUB)
 # =========================
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "model_parurasio801010.keras")
+# Gunakan relative path sederhana agar tidak bingung dengan direktori /mount/src/ di cloud
+MODEL_PATH = "model_parurasio801010.keras" 
 
 @st.cache_resource
 def load_model():
-    model = tf.keras.models.load_model(MODEL_PATH, compile=False)
+    # Tambahkan safe_mode=False untuk menangani isu deserialisasi Keras 3
+    model = tf.keras.models.load_model(MODEL_PATH, compile=False, safe_mode=False)
     return model
 
-model = load_model()
+# Coba muat model dengan penanganan error
+try:
+    model = load_model()
+except Exception as e:
+    st.error(f"Gagal memuat model: {e}")
+    st.stop()
 
 # =========================
 # LABEL KELAS (WAJIB SESUAI TRAINING)
