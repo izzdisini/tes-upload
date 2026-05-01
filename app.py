@@ -1,5 +1,6 @@
 import os
 # WAJIB: Letakkan ini di baris paling atas sebelum import tensorflow
+os.environ["TF_USE_LEGACY_KERAS"] = "1"
 
 import streamlit as st
 import tensorflow as tf
