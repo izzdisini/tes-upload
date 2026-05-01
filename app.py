@@ -2,9 +2,9 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 from PIL import Image
+import pandas as pd
 
 st.set_page_config(page_title="Deteksi Paru-Paru", layout="centered")
-
 st.title("Deteksi Penyakit Paru-Paru (X-ray)")
 st.write("Upload gambar X-ray untuk mendapatkan prediksi.")
 
@@ -13,12 +13,8 @@ st.write("Upload gambar X-ray untuk mendapatkan prediksi.")
 # =========================
 @st.cache_resource
 def load_model():
+    # FIX 1: Gunakan nama file yang benar (.h5 bukan .keras)
     model = tf.keras.models.load_model("model_parurasio801010.h5", compile=False)
-    model.compile(
-        optimizer='adam',
-        loss='categorical_crossentropy',
-        metrics=['accuracy']
-    )
     return model
 
 model = load_model()
@@ -34,6 +30,7 @@ class_names = ["covid", "lung normal", "lung opacity", "viral pneumonia"]
 uploaded_file = st.file_uploader("Upload gambar", type=["jpg", "png", "jpeg"])
 
 if uploaded_file is not None:
+    # FIX 2: Image.open yang benar (bukan hyperlink)
     image = Image.open(uploaded_file).convert("RGB")
     st.image(image, caption="Gambar yang diupload", use_column_width=True)
 
@@ -56,9 +53,13 @@ if uploaded_file is not None:
     # =========================
     # OUTPUT
     # =========================
-    st.success(f"Hasil Prediksi: {class_names[predicted_class]}")
-    st.info(f"Confidence: {confidence*100:.2f}%")
+    st.success(f"Hasil Prediksi: **{class_names[predicted_class]}**")
+    # FIX 3: st.info yang benar (bukan hyperlink)
+    st.info(f"Confidence: {confidence * 100:.2f}%")
 
-    # (opsional) grafik probabilitas
+    # FIX 4: Bar chart dengan label kelas yang benar
     st.subheader("Probabilitas Tiap Kelas")
-    st.bar_chart(prediction[0])
+    prob_df = pd.DataFrame({
+        "Probabilitas": prediction[0]
+    }, index=class_names)
+    st.bar_chart(prob_df)
