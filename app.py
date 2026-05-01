@@ -1,6 +1,5 @@
 import os
 # WAJIB: Letakkan ini di baris paling atas sebelum import tensorflow
-os.environ["TF_USE_LEGACY_KERAS"] = "1" 
 
 import streamlit as st
 import tensorflow as tf
@@ -19,7 +18,7 @@ st.write("Upload gambar X-ray untuk mendapatkan prediksi.")
 # LOAD MODEL (PASTIKAN NAMA FILE SESUAI DI GITHUB)
 # =========================
 # Gunakan relative path sederhana agar tidak bingung dengan direktori /mount/src/ di cloud
-MODEL_PATH = "model_parurasio801010.keras" 
+MODEL_PATH = "model_parurasio801010.h5" 
 
 @st.cache_resource
 def load_model():
