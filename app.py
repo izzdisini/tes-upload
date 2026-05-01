@@ -19,7 +19,7 @@ st.write("Upload gambar X-ray untuk mendapatkan prediksi.")
 # LOAD MODEL (PASTIKAN NAMA FILE SESUAI DI GITHUB)
 # =========================
 # Gunakan relative path sederhana agar tidak bingung dengan direktori /mount/src/ di cloud
-MODEL_PATH = "model_parurasio801010.h5" 
+MODEL_PATH = "model_parurasio801010.keras" 
 
 @st.cache_resource
 def load_model():
