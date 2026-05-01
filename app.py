@@ -13,7 +13,7 @@ st.write("Upload gambar X-ray untuk mendapatkan prediksi.")
 # =========================
 @st.cache_resource
 def load_model():
-    model = tf.keras.models.load_model("model_parurasio801010.keras", compile=False)
+    model = tf.keras.models.load_model("model_parurasio801010.keras")
 
     # optional (biar lebih aman & hilang warning)
     model.compile(
